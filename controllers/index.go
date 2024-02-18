@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -15,6 +16,8 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"github.com/julienschmidt/httprouter"
 	"golang.org/x/net/websocket"
+
+	"github.com/russross/blackfriday"
 )
 
 var tpls = []string{
@@ -30,6 +33,11 @@ var tpls = []string{
 	"public/tpls/counter.tpl",
 	"public/tpls/footer.tpl",
 	"public/tpls/script.tpl",
+}
+
+func markDowner(args ...interface{}) template.HTML {
+	return template.HTML(blackfriday.MarkdownCommon([]byte(fmt.Sprintf("%s", args...))))
+	// return template.HTML(strings.ToLower(fmt.Sprintf("%s", args...)))
 }
 
 var (

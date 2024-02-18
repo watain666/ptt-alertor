@@ -118,6 +118,9 @@ func newArticles(bd Board) (newArticles, onlineArticles article.Articles) {
 }
 
 func (bd Board) FetchArticles() (articles article.Articles) {
+	if bd.Name == "" {
+		return
+	}
 	articles, err := rss.BuildArticles(bd.Name)
 	if err != nil {
 		if err == rss.ErrTooManyRequests {

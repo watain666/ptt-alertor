@@ -66,9 +66,9 @@ func main() {
 	m := messenger.New()
 
 	router.GET("/", ctrlr.Index)
-	router.GET("/messenger", ctrlr.MessengerIndex)
+	// router.GET("/messenger", ctrlr.MessengerIndex)
 	router.GET("/line", ctrlr.LineIndex)
-	router.GET("/telegram", ctrlr.TelegramIndex)
+	// router.GET("/telegram", ctrlr.TelegramIndex)
 	router.GET("/redirect/:checksum", ctrlr.Redirect)
 	router.GET("/top", ctrlr.Top)
 	router.GET("/docs", ctrlr.Docs)
@@ -155,12 +155,12 @@ func startJobs() {
 
 func init() {
 	// for initial app
-	// jobs.NewPushSumKeyReplacer().Run()
-	// jobs.NewMigrateBoard(map[string]string{}).Run()
-	// jobs.NewTop().Run()
-	// jobs.NewCacheCleaner().Run()
-	// jobs.NewGenerator().Run()
-	// jobs.NewFetcher().Run()
-	// jobs.NewMigrateDB().Run()
-	// jobs.NewCategoryCleaner().Run()
+	jobs.NewPushSumKeyReplacer().Run()
+	jobs.NewMigrateBoard(map[string]string{}).Run()
+	jobs.NewTop().Run()
+	jobs.NewCacheCleaner().Run()
+	jobs.NewGenerator().Run()
+	jobs.NewFetcher().Run()
+	jobs.NewMigrateDB().Run()
+	jobs.NewCategoryCleaner().Run()
 }

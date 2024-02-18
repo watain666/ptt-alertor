@@ -105,11 +105,11 @@ func handleFollowAndJoin(event *linebot.Event) {
 func getLineNotifyConnectMessage(accountID, accountType string) string {
 	url := shorturl.Gen(getAuthorizeURL(accountID))
 
-	groupName := "透過1對1聊天接收LINE Notify的通知"
-	demoLink := "https://media.giphy.com/media/l0Iy28oboQbSw6Cn6/giphy.gif"
+	var groupName string
 	if accountType == accountTypeGroup {
 		groupName = "此群組名稱"
-		demoLink = "https://www.facebook.com/PttAlertor/posts/975327009676889"
+	} else {
+		groupName = "透過一對一接收 Line Notify 通知"
 	}
 
 	return fmt.Sprintf(`歡迎使用 Ptt Alertor。
@@ -118,10 +118,7 @@ func getLineNotifyConnectMessage(accountID, accountType string) string {
 2. 選擇「%s」
 3. 點擊「同意並連動」
 %s
-
-你將可以在 Ptt Alertor 設定看板、作者、關鍵字，並在 LINE Notify 得到最新文章。
-觀看Demo:
-%s`, groupName, url, demoLink)
+`, groupName, url)
 }
 
 func handleUnfollowAndLeave(event *linebot.Event) {

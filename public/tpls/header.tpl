@@ -1,27 +1,12 @@
 {{define "header"}}
-<div class="header">
-    <nav>
-        <ul class="nav nav-pills pull-right">
-            <li class="hidden-xs" role="presentation"><a href="/docs">DOCS</a></li>
-            <li role="presentation"><a href="/top">TOP 100</a></li>
-
-            <li class="hidden-xs" role="presentation"><a href="/line">LINE</a></li>
-            <li class="hidden-xs" role="presentation"><a href="/messenger">Messenger</a></li>
-            <li class="hidden-xs" role="presentation"><a href="/telegram">Telegram</a></li>
-
-            <li role="presentation" class="dropdown visible-xs-block">
-                <a href="#" class="dropdown-toggle" type="button" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Platform<span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="/line">LINE</a></li>
-                    <li><a href="/messenger">Messenger</a></li>
-                    <li><a href="/telegram">Telegram</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <h3 class="text-muted"><a href="/">Ptt Alertor</a></h3>
-</div>
-<hr>
+<article class="markdown-body">
+    <h1><a href="/">Ptt Alert(sating00)</a></h1>
+    
+    <grid class="grid grid-flow-col list-none">
+        <li><a href="/docs">DOCS</a></li>
+        <li><a href="/top">TOP 100</a></li>
+        <li><a href="/line">LINE</a></li>
+    </grid>
+    <hr>
+</article>
 {{end}}

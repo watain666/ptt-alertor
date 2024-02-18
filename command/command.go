@@ -60,7 +60,7 @@ var Commands = map[string]map[string]string{
 		"範例":      "新增推文 https://www.ptt.cc/bbs/EZsoft/M.1497363598.A.74E.html",
 	},
 	"進階應用": {
-		"參考連結": "https://pttalertor.dinolai.com/docs",
+		"參考連結": "https://line-notify.sating.cc/docs",
 	},
 }
 
@@ -335,7 +335,7 @@ func listTop() string {
 	for i, pushSum := range top.ListPushSum(5) {
 		content += fmt.Sprintf("\n%d. %s", i+1, pushSum)
 	}
-	content += "\n\nTOP 100:\nhttp://pttalertor.dinolai.com/top"
+	content += "\n\nTOP 100:\nhttps://line-notify.sating.cc/top"
 	return content
 }
 

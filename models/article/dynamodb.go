@@ -2,12 +2,14 @@ package article
 
 import (
 	"encoding/json"
+	"os"
 	"strconv"
 	"time"
 
 	log "github.com/Ptt-Alertor/logrus"
 	"github.com/Ptt-Alertor/ptt-alertor/myutil"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
@@ -18,8 +20,64 @@ const tableName string = "articles"
 // table: code, board, content
 type DynamoDB struct{}
 
+// func (DynamoDB) Find(code string, a *Article) {
+// 	dynamo := connections.DB()
+
+// 	var version string
+// 	if err := dynamo.QueryRow("select version()").Scan(&version); err != nil {
+// 		panic(err)
+// 	}
+
+// 	result := dynamo.QueryRow(
+// 		`
+// 		SELECT
+// 			Code,
+// 			Title,
+// 			Link,
+// 			Date,
+// 			Author,
+// 			Board,
+// 			ID,
+// 			PushSum,
+// 			LastPushDateTime,
+// 			Comments
+// 		FROM `+tableName+`
+// 		WHERE
+// 			Code = $1;
+// 		`, code)
+
+// 	if err := result.Err(); err != nil {
+// 		log.WithField("runtime", myutil.BasicRuntimeInfo()).WithError(err).Error("DB Find Article Failed")
+// 		return
+// 	}
+
+// 	var at Article
+// 	err := result.Scan(
+// 		&at.Code,
+// 		&at.Title,
+// 		&at.Link,
+// 		&at.Date,
+// 		&at.Author,
+// 		&at.Board,
+// 		&at.ID,
+// 		&at.PushSum,
+// 		&at.LastPushDateTime,
+// 		&at.Comments)
+
+// 	if err != nil {
+// 		log.WithField("code", code).Warn("Article Not Found")
+// 	}
+// }
+
 func (DynamoDB) Find(code string, a *Article) {
-	dynamo := dynamodb.New(session.New())
+	// dynamo := dynamodb.New(session.New())
+	sess, _ := session.NewSession(&aws.Config{
+		Region:      aws.String(os.Getenv("AWS_REGION")),
+		Endpoint:    aws.String(os.Getenv("DB_CONNECTION")),
+		Credentials: credentials.NewStaticCredentials("local", "local", ""),
+		// CredentialsChainVerboseErrors: aws.Bool(false),
+	})
+	dynamo := dynamodb.New(sess)
 	result, err := dynamo.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(tableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -78,7 +136,14 @@ func (DynamoDB) Save(a Article) error {
 		myutil.LogJSONEncode(err, a)
 		return err
 	}
-	dynamo := dynamodb.New(session.New())
+	// dynamo := dynamodb.New(session.New())
+	sess, _ := session.NewSession(&aws.Config{
+		Region:      aws.String(os.Getenv("AWS_REGION")),
+		Endpoint:    aws.String(os.Getenv("DB_CONNECTION")),
+		Credentials: credentials.NewStaticCredentials("local", "local", ""),
+		// CredentialsChainVerboseErrors: aws.Bool(false),
+	})
+	dynamo := dynamodb.New(sess)
 	_, err = dynamo.PutItem(&dynamodb.PutItemInput{
 		Item: map[string]*dynamodb.AttributeValue{
 			"ID": {
@@ -122,7 +187,14 @@ func (DynamoDB) Save(a Article) error {
 }
 
 func (DynamoDB) Delete(code string) error {
-	dynamo := dynamodb.New(session.New())
+	// dynamo := dynamodb.New(session.New())
+	sess, _ := session.NewSession(&aws.Config{
+		Region:      aws.String(os.Getenv("AWS_REGION")),
+		Endpoint:    aws.String(os.Getenv("DB_CONNECTION")),
+		Credentials: credentials.NewStaticCredentials("local", "local", ""),
+		// CredentialsChainVerboseErrors: aws.Bool(false),
+	})
+	dynamo := dynamodb.New(sess)
 	_, err := dynamo.DeleteItem(&dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"Code": {

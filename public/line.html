@@ -1,40 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 {{template "head" .}}
 
 <body>
-    <div class="container">
-        {{template "header"}} {{template "slogan"}}
-        <div id="main" class="row bg-success">
-            <div id="demo" class="col-md-4 col-md-push-4">
-                <img id="demo-img" src="https://{{.S3Domain}}/assets/line_intro.gif" alt="introduction"
-                    class="center-block img-rounded img-responsive">
-            </div>
-
-            <div id="add" class="col-md-4 col-md-push-4">
-                <div class="center-text">
-                    {{template "counter" .}}
-                </div>
-                <div class="center-text">
-                    <p>LINE ID: @vxl5146r</p>
-                </div>
-                <div class="center-text">
-                    <a href="https://line.me/R/ti/p/%40vxl5146r"><img height="36" border="0" alt="加入好友"
-                            src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png"></a>
-                </div>
-
-                <div>
-                    <img class="img-responsive center-block" src="https://qr-official.line.me/L/LXTG2w48JY.png">
-                </div>
-            </div>
-            <div id="command" class="col-md-4 col-md-pull-8">
-                {{template "command"}}
-            </div>
+    <div class="container mx-auto">
+        {{template "header"}}
+        {{template "slogan"}}
+        <a href="https://line.me/R/ti/p/%40601babgg" target="_blank">
+            <img height="36" border="0" alt="加入好友" src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" />
+        </a>
+        <p>LINE ID: @601babgg</p>
+        <div>
+            {{template "command"}}
         </div>
+        <hr>
         {{template "footer"}}
+        {{template "script"}}
     </div>
-    {{template "script" .}}
 </body>
 
 </html>

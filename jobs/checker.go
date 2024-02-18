@@ -65,7 +65,12 @@ func (c Checker) String() string {
 	if c.author != "" {
 		subType = "作者"
 	}
-	return fmt.Sprintf("%s@%s\r\n看板：%s；%s：%s%s", c.word, c.board, c.board, subType, c.word, c.articles.String())
+	return fmt.Sprintf(
+		`%s@%s
+看板：%s; %s%s%s
+`,
+		c.word, c.board,
+		c.board, subType, c.word, c.articles.String())
 }
 
 // Self return Checker itself

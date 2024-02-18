@@ -2,9 +2,11 @@ package board
 
 import (
 	"encoding/json"
+	"os"
 
 	log "github.com/Ptt-Alertor/logrus"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 
@@ -19,7 +21,18 @@ type DynamoDB struct {
 }
 
 func (DynamoDB) GetArticles(boardName string) (articles article.Articles) {
-	dynamo := dynamodb.New(session.New())
+	if boardName == "" {
+		return
+	}
+
+	// dynamo := dynamodb.New(session.New())
+	sess, _ := session.NewSession(&aws.Config{
+		Region:      aws.String(os.Getenv("AWS_REGION")),
+		Endpoint:    aws.String(os.Getenv("DB_CONNECTION")),
+		Credentials: credentials.NewStaticCredentials("local", "local", ""),
+		// CredentialsChainVerboseErrors: aws.Bool(false),
+	})
+	dynamo := dynamodb.New(sess)
 	result, err := dynamo.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(tableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -56,7 +69,14 @@ func (DynamoDB) Save(boardName string, articles article.Articles) error {
 		return err
 	}
 
-	dynamo := dynamodb.New(session.New())
+	// dynamo := dynamodb.New(session.New())
+	sess, _ := session.NewSession(&aws.Config{
+		Region:      aws.String(os.Getenv("AWS_REGION")),
+		Endpoint:    aws.String(os.Getenv("DB_CONNECTION")),
+		Credentials: credentials.NewStaticCredentials("local", "local", ""),
+		// CredentialsChainVerboseErrors: aws.Bool(false),
+	})
+	dynamo := dynamodb.New(sess)
 	_, err = dynamo.PutItem(&dynamodb.PutItemInput{
 		Item: map[string]*dynamodb.AttributeValue{
 			"Board": {
@@ -76,7 +96,14 @@ func (DynamoDB) Save(boardName string, articles article.Articles) error {
 }
 
 func (DynamoDB) Delete(boardName string) error {
-	dynamo := dynamodb.New(session.New())
+	// dynamo := dynamodb.New(session.New())
+	sess, _ := session.NewSession(&aws.Config{
+		Region:      aws.String(os.Getenv("AWS_REGION")),
+		Endpoint:    aws.String(os.Getenv("DB_CONNECTION")),
+		Credentials: credentials.NewStaticCredentials("local", "local", ""),
+		// CredentialsChainVerboseErrors: aws.Bool(false),
+	})
+	dynamo := dynamodb.New(sess)
 	_, err := dynamo.DeleteItem(&dynamodb.DeleteItemInput{
 		Key: map[string]*dynamodb.AttributeValue{
 			"Board": {
