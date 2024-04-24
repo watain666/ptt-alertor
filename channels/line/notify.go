@@ -16,7 +16,7 @@ import (
 	log "github.com/Ptt-Alertor/logrus"
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/models"
 )
 
 const notifyBotHost string = "https://notify-bot.line.me"

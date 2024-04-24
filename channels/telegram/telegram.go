@@ -11,10 +11,10 @@ import (
 
 	"strconv"
 
-	"github.com/Ptt-Alertor/ptt-alertor/command"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/julienschmidt/httprouter"
+	"github.com/watain666/ptt-alertor/command"
+	"github.com/watain666/ptt-alertor/myutil"
 )
 
 var (

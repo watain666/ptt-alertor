@@ -4,11 +4,11 @@ import (
 	"strings"
 
 	log "github.com/Ptt-Alertor/logrus"
-	"github.com/Ptt-Alertor/ptt-alertor/models"
-	"github.com/Ptt-Alertor/ptt-alertor/models/article"
-	"github.com/Ptt-Alertor/ptt-alertor/models/author"
-	"github.com/Ptt-Alertor/ptt-alertor/models/keyword"
-	"github.com/Ptt-Alertor/ptt-alertor/models/pushsum"
+	"github.com/watain666/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/models/article"
+	"github.com/watain666/ptt-alertor/models/author"
+	"github.com/watain666/ptt-alertor/models/keyword"
+	"github.com/watain666/ptt-alertor/models/pushsum"
 )
 
 type migrateBoard struct {

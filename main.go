@@ -9,14 +9,15 @@ import (
 
 	log "github.com/Ptt-Alertor/logrus"
 	"github.com/google/gops/agent"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/julienschmidt/httprouter"
 	"github.com/robfig/cron"
 
-	"github.com/Ptt-Alertor/ptt-alertor/channels/line"
-	"github.com/Ptt-Alertor/ptt-alertor/channels/messenger"
-	"github.com/Ptt-Alertor/ptt-alertor/channels/telegram"
-	ctrlr "github.com/Ptt-Alertor/ptt-alertor/controllers"
-	"github.com/Ptt-Alertor/ptt-alertor/jobs"
+	"github.com/watain666/ptt-alertor/channels/line"
+	"github.com/watain666/ptt-alertor/channels/messenger"
+	"github.com/watain666/ptt-alertor/channels/telegram"
+	ctrlr "github.com/watain666/ptt-alertor/controllers"
+	"github.com/watain666/ptt-alertor/jobs"
 )
 
 var (

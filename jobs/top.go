@@ -8,8 +8,8 @@ import (
 
 	"strings"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models"
-	"github.com/Ptt-Alertor/ptt-alertor/models/top"
+	"github.com/watain666/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/models/top"
 )
 
 type Top struct{}

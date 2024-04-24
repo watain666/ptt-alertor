@@ -7,12 +7,12 @@ import (
 	"time"
 
 	log "github.com/Ptt-Alertor/logrus"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/watain666/ptt-alertor/myutil"
 )
 
 const tableName string = "articles"

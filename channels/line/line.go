@@ -10,12 +10,12 @@ import (
 	"regexp"
 
 	log "github.com/Ptt-Alertor/logrus"
-	"github.com/Ptt-Alertor/ptt-alertor/command"
-	"github.com/Ptt-Alertor/ptt-alertor/models"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
-	"github.com/Ptt-Alertor/ptt-alertor/shorturl"
 	"github.com/julienschmidt/httprouter"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/watain666/ptt-alertor/command"
+	"github.com/watain666/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/myutil"
+	"github.com/watain666/ptt-alertor/shorturl"
 )
 
 const maxCharacters = 2000

@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  ptt-alertor:
+    container_name: ptt-alertor
+    build:
+      context: .
+      target: ptt-alertor
+    ports:
+      - 9090:6060
+
+  redis:
+    container_name: redis
+    image: redis
+    command: redis-server --requirepass yourpassword
+    volumes:
+      - ${REDIS_DIR}:/data
+    ports:
+      - 6379:6379
+  
+  redis-commander:
+    container_name: redis-commander
+    image: rediscommander/redis-commander
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_HOSTS: redis:redis:6379:0:yourpassword
+      TZ: Etc/GMT+4
+
+  db:
+    container_name: pgsql
+    image: postgres
+    volumes:
+      - ${DB_DIR}:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGDATA=${DB_DIR}
+
+  pgadmin4:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: "always"
+    volumes:
+      - ${PGADMIN_DIR}:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_CONFIG_SESSION_EXPIRATION_TIME=${PGADMIN_CONFIG_SESSION_EXPIRATION_TIME}
+      - PGADMIN_CONFIG_MAX_SESSION_IDLE_TIME=${PGADMIN_CONFIG_MAX_SESSION_IDLE_TIME}

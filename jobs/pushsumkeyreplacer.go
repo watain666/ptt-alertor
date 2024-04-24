@@ -2,7 +2,7 @@ package jobs
 
 import (
 	log "github.com/Ptt-Alertor/logrus"
-	"github.com/Ptt-Alertor/ptt-alertor/models/pushsum"
+	"github.com/watain666/ptt-alertor/models/pushsum"
 )
 
 type PushSumKeyReplacer struct{}

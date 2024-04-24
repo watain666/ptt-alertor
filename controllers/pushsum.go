@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models/pushsum"
 	"github.com/julienschmidt/httprouter"
+	"github.com/watain666/ptt-alertor/models/pushsum"
 )
 
 func PushSumBoards(w http.ResponseWriter, r *http.Request, params httprouter.Params) {

@@ -10,9 +10,9 @@ import (
 	"encoding/json"
 
 	log "github.com/Ptt-Alertor/logrus"
-	"github.com/Ptt-Alertor/ptt-alertor/command"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
 	"github.com/julienschmidt/httprouter"
+	"github.com/watain666/ptt-alertor/command"
+	"github.com/watain666/ptt-alertor/myutil"
 )
 
 const (

@@ -4,13 +4,13 @@ import (
 	"time"
 
 	log "github.com/Ptt-Alertor/logrus"
-	"github.com/Ptt-Alertor/ptt-alertor/models"
-	"github.com/Ptt-Alertor/ptt-alertor/models/author"
-	"github.com/Ptt-Alertor/ptt-alertor/models/keyword"
-	"github.com/Ptt-Alertor/ptt-alertor/models/pushsum"
-	"github.com/Ptt-Alertor/ptt-alertor/models/subscription"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
-	"github.com/Ptt-Alertor/ptt-alertor/ptt/rss"
+	"github.com/watain666/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/models/author"
+	"github.com/watain666/ptt-alertor/models/keyword"
+	"github.com/watain666/ptt-alertor/models/pushsum"
+	"github.com/watain666/ptt-alertor/models/subscription"
+	"github.com/watain666/ptt-alertor/myutil"
+	"github.com/watain666/ptt-alertor/ptt/rss"
 )
 
 type categoryCleaner struct {

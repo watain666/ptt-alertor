@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models/article"
-	pttHttp "github.com/Ptt-Alertor/ptt-alertor/ptt/http"
 	"github.com/mmcdole/gofeed"
+	"github.com/watain666/ptt-alertor/models/article"
+	pttHttp "github.com/watain666/ptt-alertor/ptt/http"
 )
 
 var ErrTooManyRequests = errors.New("Too Many Requests")

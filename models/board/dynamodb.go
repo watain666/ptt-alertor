@@ -10,8 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models/article"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
+	"github.com/watain666/ptt-alertor/models/article"
+	"github.com/watain666/ptt-alertor/myutil"
 )
 
 const tableName string = "boards"

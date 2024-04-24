@@ -1,9 +1,9 @@
 # comment
-   .*
    Dockerfile*
    docker_golang_1.8/*
    LICENSE*
    README.md
    logo.jpg
    public/assets/images/*
-
+   .git*
+   data

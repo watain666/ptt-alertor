@@ -9,12 +9,12 @@ import (
 
 	"strings"
 
-	"github.com/Ptt-Alertor/ptt-alertor/connections"
-	"github.com/Ptt-Alertor/ptt-alertor/models/counter"
-	"github.com/Ptt-Alertor/ptt-alertor/models/top"
-	"github.com/Ptt-Alertor/ptt-alertor/shorturl"
 	"github.com/garyburd/redigo/redis"
 	"github.com/julienschmidt/httprouter"
+	"github.com/watain666/ptt-alertor/connections"
+	"github.com/watain666/ptt-alertor/models/counter"
+	"github.com/watain666/ptt-alertor/models/top"
+	"github.com/watain666/ptt-alertor/shorturl"
 	"golang.org/x/net/websocket"
 
 	"github.com/russross/blackfriday"

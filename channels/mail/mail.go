@@ -6,7 +6,7 @@ import (
 
 	log "github.com/Ptt-Alertor/logrus"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models/article"
+	"github.com/watain666/ptt-alertor/models/article"
 	"gopkg.in/mailgun/mailgun-go.v1"
 )
 

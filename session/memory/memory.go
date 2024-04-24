@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Ptt-Alertor/ptt-alertor/session"
+	"github.com/watain666/ptt-alertor/session"
 )
 
 var pder = &Provider{list: list.New()}

@@ -7,9 +7,9 @@ import (
 
 	"strings"
 
-	"github.com/Ptt-Alertor/ptt-alertor/connections"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
 	"github.com/garyburd/redigo/redis"
+	"github.com/watain666/ptt-alertor/connections"
+	"github.com/watain666/ptt-alertor/myutil"
 )
 
 type Redis struct{}

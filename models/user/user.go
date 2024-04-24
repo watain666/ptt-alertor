@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models/subscription"
+	"github.com/watain666/ptt-alertor/models/subscription"
 )
 
 type User struct {

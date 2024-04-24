@@ -11,8 +11,8 @@ import (
 
 	"strconv"
 
-	"github.com/Ptt-Alertor/ptt-alertor/connections"
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
+	"github.com/watain666/ptt-alertor/connections"
+	"github.com/watain666/ptt-alertor/myutil"
 )
 
 const redisPrefix = "sum:"

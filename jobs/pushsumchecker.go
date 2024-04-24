@@ -12,12 +12,12 @@ import (
 
 	log "github.com/Ptt-Alertor/logrus"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models"
-	"github.com/Ptt-Alertor/ptt-alertor/models/article"
-	"github.com/Ptt-Alertor/ptt-alertor/models/pushsum"
-	"github.com/Ptt-Alertor/ptt-alertor/models/subscription"
-	"github.com/Ptt-Alertor/ptt-alertor/models/user"
-	"github.com/Ptt-Alertor/ptt-alertor/ptt/web"
+	"github.com/watain666/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/models/article"
+	"github.com/watain666/ptt-alertor/models/pushsum"
+	"github.com/watain666/ptt-alertor/models/subscription"
+	"github.com/watain666/ptt-alertor/models/user"
+	"github.com/watain666/ptt-alertor/ptt/web"
 )
 
 // NewPushSumKeyReplacer Job schedule must longer than overduehour

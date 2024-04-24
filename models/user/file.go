@@ -1,4 +1,5 @@
-//+build !test
+//go:build !test
+// +build !test
 
 package user
 
@@ -8,7 +9,7 @@ import (
 
 	log "github.com/Ptt-Alertor/logrus"
 
-	"github.com/Ptt-Alertor/ptt-alertor/myutil"
+	"github.com/watain666/ptt-alertor/myutil"
 )
 
 type File struct {

@@ -1,6 +1,6 @@
-module github.com/Ptt-Alertor/ptt-alertor
+module github.com/watain666/ptt-alertor
 
-go 1.21
+go 1.22
 
 toolchain go1.22.0
 
@@ -11,6 +11,7 @@ require (
 	github.com/garyburd/redigo v0.0.0-20170216214944-0d253a66e6e1
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/google/gops v0.3.28
+	github.com/joho/godotenv v1.5.1
 	github.com/julienschmidt/httprouter v0.0.0-20170104185816-8a45e95fc75c
 	github.com/line/line-bot-sdk-go v7.8.0+incompatible
 	github.com/mmcdole/gofeed v0.0.0-20170307182009-042c0a912158

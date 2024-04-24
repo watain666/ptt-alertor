@@ -45,3 +45,6 @@ ptt-alertor
 # app
 .env*
 !.env.example
+
+# db volumes
+data

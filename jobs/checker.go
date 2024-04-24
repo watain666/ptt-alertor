@@ -10,12 +10,12 @@ import (
 
 	log "github.com/Ptt-Alertor/logrus"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models"
-	"github.com/Ptt-Alertor/ptt-alertor/models/article"
-	"github.com/Ptt-Alertor/ptt-alertor/models/author"
-	"github.com/Ptt-Alertor/ptt-alertor/models/board"
-	"github.com/Ptt-Alertor/ptt-alertor/models/keyword"
-	"github.com/Ptt-Alertor/ptt-alertor/models/user"
+	"github.com/watain666/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/models/article"
+	"github.com/watain666/ptt-alertor/models/author"
+	"github.com/watain666/ptt-alertor/models/board"
+	"github.com/watain666/ptt-alertor/models/keyword"
+	"github.com/watain666/ptt-alertor/models/user"
 )
 
 const checkHighBoardDuration = 1 * time.Second

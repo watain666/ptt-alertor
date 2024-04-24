@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/Ptt-Alertor/ptt-alertor/models"
-	"github.com/Ptt-Alertor/ptt-alertor/models/keyword"
 	"github.com/julienschmidt/httprouter"
+	"github.com/watain666/ptt-alertor/models"
+	"github.com/watain666/ptt-alertor/models/keyword"
 )
 
 func KeywordBoards(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
