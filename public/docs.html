@@ -8,6 +8,7 @@
         <div class="hidden-xs">
             {{template "header"}}
         </div>
+        <main id="main-content"><h1 class="page-title">把訂閱，設定得剛剛好。</h1><p class="page-description">從進階比對到批量編輯，找到適合你的追蹤方式。</p>
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#advanced-comparison" aria-controls="advanced-comparison" role="tab" data-toggle="tab">進階比對</a>
@@ -18,6 +19,7 @@
             <li role="presentation">
                 <a href="#commandline" aria-controls="commandline" role="tab" data-toggle="tab">指令列</a>
             </li>
+            <li role="presentation"><a href="#self-hosting" aria-controls="self-hosting" role="tab" data-toggle="tab">Docker 自架</a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="advanced-comparison">
@@ -223,8 +225,40 @@
                     </div>
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane self-hosting-guide" id="self-hosting">
+                <div class="guide-overview"><span class="eyebrow">YOUR SERVER. YOUR PTT RADAR.</span><h2>用 Docker Compose，架起自己的通知服務。</h2><p>一台能持續運作的主機、一個 Telegram Bot，讓喜歡的消息送到你自己的機器人。</p><div class="guide-requirements"><span>Docker Engine + Compose v2</span><span>Git</span><span>公開 HTTPS 網址</span></div></div>
+                <section class="guide-step"><span class="guide-step-number">01</span><div><h3>取得專案，準備環境設定</h3><p>先依照 <a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener noreferrer">Docker 官方文件 ↗</a> 安裝 Docker 與 Compose。以下指令適用於 Linux、macOS 或 Windows WSL，請在同一個終端機依序執行。</p><div class="guide-code"><div><span>TERMINAL</span><button type="button" data-copy-code="setup-code">複製指令</button></div><pre><code id="setup-code">git clone https://github.com/watain666/ptt-alertor.git
+cd ptt-alertor
+cp .env.example .env
+docker compose version</code></pre></div><p class="guide-note">已有 .env 時請直接編輯，避免覆蓋原本設定。Go 編譯由 Docker 處理，不需要另外安裝 Go。</p></div></section>
+                <section class="guide-step"><span class="guide-step-number">02</span><div><h3>建立自己的 Telegram 機器人</h3><p>在 Telegram 開啟官方 <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer">@BotFather ↗</a>，傳送 <code>/newbot</code>，依指示設定名稱與帳號。將取得的 Bot Token 填入 .env 的 <code>TELEGRAM_TOKEN</code>。</p><p>請使用專屬機器人；同一個 Bot 同時只能使用一個 webhook 網址。Token 是機器人的密鑰，請保留在主機的 .env，不要貼到公開文件或提交到 Git。</p></div></section>
+                <section class="guide-step"><span class="guide-step-number">03</span><div><h3>設定網址與 .env</h3><p>用編輯器開啟 .env。將以下範例中的網域、Token 與管理密碼換成自己的值，其餘資料庫設定先保留預設即可。</p><div class="guide-code"><div><span>.ENV · 請替換範例值</span></div><pre><code>APP_HOST=https://ptt.example.com
+APP_WS_HOST=wss://ptt.example.com/ws
+TELEGRAM_TOKEN=YOUR_BOT_TOKEN
+AUTH_USER=admin
+AUTH_PW=YOUR_LONG_RANDOM_PASSWORD
+
+REDIS_ENDPOINT=redis
+REDIS_PORT=6379
+DB_CONNECTION=http://dynamodb-local:8000
+AWS_REGION=us-west-2</code></pre></div><p><strong>讓公開 HTTPS 網址連到主機的 9090 埠。</strong>可使用支援 WebSocket 的反向代理或 Cloudflare Tunnel，並保留 <code>/telegram/</code> 與 <code>/ws</code> 路徑。Telegram 必須能從網際網路呼叫 webhook，只有 localhost 無法接收機器人訊息。</p><p class="guide-note">只想先看看頁面？保留 .env.example 的 localhost 網址與空白 Token 即可。此時 Telegram 功能停用；完成 HTTPS 與 Token 設定後，重新建立 app 容器啟用。</p></div></section>
+                <section class="guide-step"><span class="guide-step-number">04</span><div><h3>啟動服務，確認容器狀態</h3><div class="guide-code"><div><span>TERMINAL</span><button type="button" data-copy-code="start-code">複製指令</button></div><pre><code id="start-code">docker compose config --quiet
+docker compose up --build -d
+docker compose ps -a
+docker compose logs --tail=80 app dynamodb-init</code></pre></div><p>Compose 會啟動 app、Redis 與 DynamoDB Local；dynamodb-init 建立所需資料表後，顯示 <code>Exited (0)</code> 是正常的。首次建置需要下載映像與編譯，請稍候。</p><p>開啟 <code>http://localhost:9090</code> 確認頁面，再確認自己的 HTTPS 網址可連線。啟動紀錄應出現 <code>Telegram Bot Sets Webhook Success</code>。若代理與 app 位於不同容器，代理的 localhost 並不是 app，請使用可到達 app 的主機位址或 Docker 網路名稱。</p></div></section>
+                <section class="guide-step"><span class="guide-step-number">05</span><div><h3>測試第一個訂閱</h3><p>在 Telegram 開啟<strong>你剛建立的機器人</strong>，點選「開始」，依序傳送下列指令。</p><div class="guide-code"><div><span>TELEGRAM · 請逐行傳送</span></div><pre><code>新增 Lifeismoney 咖啡
+清單</code></pre></div><p>確認機器人回覆，並在清單中看到訂閱。有新的符合文章時，就會收到通知；既有文章不一定會立即推送。</p><p class="guide-note">專案首頁的 Telegram 入口預設連到本站 @PttAlertorTiauiBot。若要對外提供自己的首頁，請在 public/telegram.html 與 public/tpls/header.tpl 將機器人帳號及連結替換成自己的帳號，再重新建置 app。</p></div></section>
+                <section class="guide-step"><span class="guide-step-number">06</span><div><h3>日常更新、暫停與資料保存</h3><p>在專案目錄取得新版程式後，僅更新 app。若你修改過前端，請先保存或合併自己的修改，再拉取新版。</p><div class="guide-code"><div><span>更新應用程式</span><button type="button" data-copy-code="update-code">複製指令</button></div><pre><code id="update-code">git pull --ff-only
+docker compose build app
+docker compose up -d --no-deps app</code></pre></div><div class="guide-code"><div><span>暫停 / 恢復服務 · 請依需求擇一執行</span></div><pre><code>docker compose stop
+docker compose start</code></pre></div><div class="guide-callout"><strong>資料保存：更新前先備份</strong><p>目前 Compose 會將 Redis 存入 redis-data volume；DynamoDB Local 的資料仍放在容器內，沒有掛載永久 volume。請勿用 <code>docker compose down</code> 或重建 dynamodb-local 來更新網頁，否則會失去其中的看板與文章資料。<code>down -v</code> 也會刪除 Redis volume。長期自架請先規劃 DynamoDB 資料持久化與備份。</p></div><p>一致性備份可先停止 app 與 dynamodb-local，執行 <code>docker compose exec -T redis redis-cli SAVE</code>，再用 <code>docker compose cp</code> 保存 Redis 的 <code>/data/dump.rdb</code> 與 DynamoDB 的 <code>/home/dynamodblocal/shared-local-instance.db</code>，完成後先啟動資料庫，再啟動 app。</p></div></section>
+                <section class="guide-troubleshooting"><h3>遇到問題時</h3><dl><dt>頁面開得起來，機器人卻沒回覆？</dt><dd>確認 Token、APP_HOST 與公開 HTTPS 可用，查看 app 紀錄的 webhook 註冊結果；修改 .env 後請執行 <code>docker compose up -d --no-deps app</code>，單純 restart 不會套用新環境變數。</dd><dt>dynamodb-init 一直沒有完成？</dt><dd>檢查 DynamoDB 容器是否啟動，及 DB_CONNECTION 是否為 <code>http://dynamodb-local:8000</code>。若 app 未啟動，先查看 <code>docker compose logs dynamodb-init dynamodb-local</code>。</dd><dt>9090 埠已被使用？</dt><dd>將 docker-compose.yml 的主機埠改為未使用的埠，例如 <code>9095:9090</code>，並同步修改反向代理的目標埠。</dd><dt>哪些埠需要公開？</dt><dd>只需讓使用者與 Telegram 連到公開 HTTPS 入口。Compose 預設也映射 6060（診斷）與 8000（資料庫）；對外部署時請移除這兩個映射或限制為本機存取，Redis 維持 Docker 內部網路即可。</dd></dl></section>
+                <p class="guide-sources">延伸閱讀：<a href="https://docs.docker.com/compose/gettingstarted/" target="_blank" rel="noopener noreferrer">Docker Compose 官方教學 ↗</a><a href="https://core.telegram.org/bots/tutorial" target="_blank" rel="noopener noreferrer">Telegram Bot 官方教學 ↗</a><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.UsageNotes.html" target="_blank" rel="noopener noreferrer">DynamoDB Local 資料保存說明 ↗</a></p>
+            </div>
         </div>
+        </main>
     </div>
+    {{template "footer"}}
     {{template "script"}}
 </body>
 

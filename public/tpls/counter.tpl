@@ -1,18 +1,3 @@
 {{define "counter"}}
-    {{if .Count}}
-    <div id="counter-board" class="well well-sm">
-        <i class="fa fa-bell fa-fw fa-2x" aria-hidden="true"></i>
-        <span>&nbsp;已送出</span>
-        <span id="counter">
-            {{range .Count}}
-                {{if eq . ","}}
-                <span>,</span>
-                {{else}}
-                <span class="label label-default">{{.}}</span>
-                {{end}}
-            {{end}}
-        </span>
-        <span>則通知</span>
-    </div>
-    {{end}}
+{{if .Count}}<div class="counter-line page-width" id="counter-board" data-ws-host="{{.WSHost}}"><span class="green-dot" aria-hidden="true"></span> 已替大家送出 <strong id="counter">{{range .Count}}{{.}}{{end}}</strong> 則關心的消息。</div>{{end}}
 {{end}}

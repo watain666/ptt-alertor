@@ -8,6 +8,7 @@
         <div class="hidden-xs">
             {{template "header"}}
         </div>
+        <main id="main-content"><h1 class="page-title">大家都在追蹤什麼？</h1><p class="page-description">探索熱門訂閱排行，找到你的下一個興趣。</p>
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#keywords" aria-controls="keywords" role="tab" data-toggle="tab">關鍵字</a>
@@ -19,7 +20,7 @@
                 <a href="#pushsum" aria-controls="pushsum" role="tab" data-toggle="tab">推噓文</a>
             </li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content ranking-content">
             <div role="tabpanel" class="tab-pane active" id="keywords">
                 <table class="table table-hover">
                     <thead>
@@ -37,11 +38,13 @@
                             <td>{{.Word}}</td>
                             <td>{{.Count}}</td>
                             <td>
-                                <button type="button" class="copy btn btn-default btn-xs" data-toggle="tooltip">
-                                    <span class="glyphicon glyphicon-copy"></span>
+                                <button type="button" class="copy btn btn-default btn-xs" aria-label="複製此訂閱指令">
+                                    複製指令
                                 </button>
                             </td>
                         </tr>
+                        {{else}}
+                        <tr><td colspan="4" class="empty-state">目前還沒有排行資料，晚點再回來看看吧。</td></tr>
                         {{end}}
                     </tbody>
                 </table>
@@ -63,11 +66,13 @@
                             <td>{{.Word}}</td>
                             <td>{{.Count}}</td>
                             <td>
-                                <button type="button" class="copy btn btn-default btn-xs" data-toggle="tooltip">
-                                    <span class="glyphicon glyphicon-copy"></span>
+                                <button type="button" class="copy btn btn-default btn-xs" aria-label="複製此訂閱指令">
+                                    複製指令
                                 </button>
                             </td>
                         </tr>
+                        {{else}}
+                        <tr><td colspan="4" class="empty-state">目前還沒有排行資料，晚點再回來看看吧。</td></tr>
                         {{end}}
                     </tbody>
                 </table>
@@ -89,61 +94,22 @@
                             <td>{{.Word}}</td>
                             <td>{{.Count}}</td>
                             <td>
-                                <button type="button" class="copy btn btn-default btn-xs" data-toggle="tooltip">
-                                    <span class="glyphicon glyphicon-copy"></span>
+                                <button type="button" class="copy btn btn-default btn-xs" aria-label="複製此訂閱指令">
+                                    複製指令
                                 </button>
                             </td>
                         </tr>
+                        {{else}}
+                        <tr><td colspan="4" class="empty-state">目前還沒有排行資料，晚點再回來看看吧。</td></tr>
                         {{end}}
                     </tbody>
                 </table>
             </div>
         </div>
+        </main>
         {{template "footer"}}
     </div>
     {{template "script"}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-    <script>
-        $(function () {
-            var tab = "keywords"
-            var tabCommands = {
-                keywords: "新增",
-                authors: "新增作者",
-                pushsum: "新增推文數",
-                pushsumDown: "新增噓文數"
-            }
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                tab = e.target.getAttribute("aria-controls");
-            });
-            $('[data-toggle="tooltip"]').tooltip({
-                title: '已複製',
-                trigger: 'manual'
-            }).on('shown.bs.tooltip', function (e) {
-                setTimeout(function () {
-                    $(e.target).tooltip('hide');
-                }, 1000);
-            });
-            var clipboard = new Clipboard('.copy', {
-                text: function (trigger) {
-                    let boardElem = trigger.parentElement.parentElement.firstElementChild;
-                    let board = boardElem.textContent;
-                    let word = boardElem.nextElementSibling.textContent;
-                    let command = tabCommands[tab];
-                    if (tab === "pushsum" && parseInt(word) < 0) {
-                        command = tabCommands["pushsumDown"];
-                        word = Math.abs(word);
-                    }
-                    return command + " " + board + " " + word;
-                }
-            });
-            clipboard.on('success', function (e) {
-                $(e.trigger).tooltip('show');
-            });
-            clipboard.on('error', function (e) {
-                $(e.trigger).attr('title', '失敗！').tooltip('fixTitle').tooltip('show');
-            });
-        })
-    </script>
 </body>
 
 </html>

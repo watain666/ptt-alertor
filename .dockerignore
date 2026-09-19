@@ -10,3 +10,6 @@ coverage.txt
 *.test
 debug
 ptt-alertor
+
+# Local database backups
+backup/
