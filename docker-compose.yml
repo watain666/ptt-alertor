@@ -63,5 +63,15 @@ services:
       - ./docker/init-dynamodb.sh:/init-dynamodb.sh:ro
     entrypoint: ["/bin/sh", "/init-dynamodb.sh"]
 
+  # Cloudflare Tunnel service only runs if CLOUDFLARE_TUNNEL_TOKEN is set in the environment
+  # To use Cloudflare Tunnel, you need to create a tunnel in your Cloudflare account and obtain the token. 
+  # Set the token in .env before running docker-compose.
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - app
+    restart: unless-stopped
+
 volumes:
   redis-data:
