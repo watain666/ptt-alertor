@@ -96,7 +96,7 @@ func Test_makeArticleURL(t *testing.T) {
 		args args
 		want string
 	}{
-		{"M.1497363598.A.74E", args{"ezsoft", "M.1497363598.A.74E"}, "https://www.ptt.cc/bbs/EZsoft/M.1708247900.A.27C.html"},
+		{"M.1497363598.A.74E", args{"ezsoft", "M.1497363598.A.74E"}, "https://www.ptt.cc/bbs/ezsoft/M.1497363598.A.74E.html"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
