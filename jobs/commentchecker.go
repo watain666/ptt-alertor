@@ -50,20 +50,11 @@ func (cc commentChecker) Run() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			default:
-				codes := new(article.Articles).List()
-				for _, code := range codes {
-					time.Sleep(cc.duration)
-					go cc.checkComments(code, ach)
-				}
-			}
-		}
-	}()
+	go poll(ctx,
+		func() time.Duration { return cc.duration },
+		new(article.Articles).List,
+		func(code string) { cc.checkComments(code, ach) },
+	)
 
 	for {
 		select {

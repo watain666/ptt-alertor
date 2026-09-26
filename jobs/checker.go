@@ -21,15 +21,20 @@ import (
 const checkHighBoardDuration = 1 * time.Second
 
 var boardCh = make(chan *board.Board, 700)
-var highBoards []*board.Board
-var highBoardNames = strings.Split(os.Getenv("BOARD_HIGH"), ",")
+var highBoards = parseHighBoards(os.Getenv("BOARD_HIGH"))
 
-func init() {
-	for _, name := range highBoardNames {
+func parseHighBoards(value string) (boards []*board.Board) {
+	for _, name := range strings.Split(value, ",") {
+		name = strings.TrimSpace(name)
+		if name == "" {
+			continue
+		}
+
 		bd := models.Board()
 		bd.Name = name
-		highBoards = append(highBoards, bd)
+		boards = append(boards, bd)
 	}
+	return boards
 }
 
 var cker *Checker
@@ -84,16 +89,11 @@ func (c Checker) Run() {
 	defer cancel()
 	// step 1: check boards which one has new articles
 	// check high boards
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			default:
-				checkBoards(highBoards, checkHighBoardDuration)
-			}
-		}
-	}()
+	go poll(ctx,
+		func() time.Duration { return checkHighBoardDuration },
+		func() []*board.Board { return highBoards },
+		func(bd *board.Board) { checkNewArticle(bd, boardCh) },
+	)
 
 	// check off peak
 	offPeakCh := make(chan bool)
@@ -103,13 +103,8 @@ func (c Checker) Run() {
 	go func() {
 		var offPeak bool
 		duration := c.duration
-		for {
+		interval := func() time.Duration {
 			select {
-			case <-ctx.Done():
-				for len(offPeakCh) > 0 {
-					<-offPeakCh
-				}
-				return
 			case op := <-offPeakCh:
 				if offPeak != op {
 					if op {
@@ -122,9 +117,12 @@ func (c Checker) Run() {
 					offPeak = op
 				}
 			default:
-				checkBoards(models.Board().All(), duration)
 			}
+			return duration
 		}
+		poll(ctx, interval, models.Board().All,
+			func(bd *board.Board) { checkNewArticle(bd, boardCh) },
+		)
 	}()
 
 	// main
@@ -153,16 +151,17 @@ func (c Checker) Run() {
 func (c Checker) checkOffPeak(ctx context.Context, offPeakCh chan<- bool) {
 	loc := time.FixedZone("CST", 8*60*60)
 	ticker := time.NewTicker(10 * time.Minute)
+	defer ticker.Stop()
 	for {
 		select {
 		case <-ctx.Done():
 			return
 		case now := <-ticker.C:
 			t := now.In(loc)
-			if t.Hour() >= 3 && t.Hour() < 7 {
-				offPeakCh <- true
-			} else {
-				offPeakCh <- false
+			select {
+			case <-ctx.Done():
+				return
+			case offPeakCh <- t.Hour() >= 3 && t.Hour() < 7:
 			}
 		}
 	}
@@ -171,13 +170,6 @@ func (c Checker) checkOffPeak(ctx context.Context, offPeakCh chan<- bool) {
 func (c Checker) Stop() {
 	c.done <- struct{}{}
 	log.Info("Checker Stop")
-}
-
-func checkBoards(bds []*board.Board, duration time.Duration) {
-	for _, bd := range bds {
-		time.Sleep(duration)
-		go checkNewArticle(bd, boardCh)
-	}
 }
 
 func checkNewArticle(bd *board.Board, boardCh chan *board.Board) {

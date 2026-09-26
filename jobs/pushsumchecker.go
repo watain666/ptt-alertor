@@ -68,21 +68,11 @@ func (psc pushSumChecker) Run() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			default:
-				boards := pushsum.List()
-				for _, board := range boards {
-					ba := BoardArticles{board: board}
-					time.Sleep(psc.duration)
-					go psc.crawlArticles(ba, baCh)
-				}
-			}
-		}
-	}()
+	go poll(ctx,
+		func() time.Duration { return psc.duration },
+		pushsum.List,
+		func(board string) { psc.crawlArticles(BoardArticles{board: board}, baCh) },
+	)
 
 	for {
 		select {
