@@ -38,6 +38,9 @@ func init() {
 	}
 	// bot.Debug = true
 	log.Info("Telegram Authorized on " + bot.Self.UserName)
+	if err := setupMenu(bot); err != nil {
+		log.WithError(err).Warn("Telegram Menu Setup Failed")
+	}
 
 	if !strings.HasPrefix(strings.ToLower(host), "https://") {
 		log.WithField("APP_HOST", host).Warn("Skip Telegram webhook setup: APP_HOST must be https")
@@ -100,6 +103,7 @@ func handleCallbackQuery(update tgbotapi.Update) {
 
 // help - 所有指令清單
 // list - 設定清單
+// comments - 推文追蹤清單
 // ranking - 熱門關鍵字、作者、推文數
 // add - 新增看板關鍵字、作者、推文數
 // del - 刪除看板關鍵字、作者、推文數
@@ -112,8 +116,13 @@ func handleCommand(update tgbotapi.Update) {
 
 	switch update.Message.Command() {
 	case "add", "del":
-		text := update.Message.Command() + " " + update.Message.CommandArguments()
-		responseText = command.HandleCommand(text, userID, true)
+		arguments := strings.TrimSpace(update.Message.CommandArguments())
+		if arguments == "" {
+			responseText = editMenuHelp(update.Message.Command())
+		} else {
+			text := update.Message.Command() + " " + arguments
+			responseText = command.HandleCommand(text, userID, true)
+		}
 	case "start":
 		command.HandleTelegramFollow(userID, chatID)
 		responseText = "歡迎使用 Ptt Alertor\n輸入「指令」查看相關功能。\n\n觀看Demo:\nhttps://media.giphy.com/media/3ohzdF6vidM6I49lQs/giphy.gif"
@@ -121,6 +130,8 @@ func handleCommand(update tgbotapi.Update) {
 		responseText = command.HandleCommand("help", userID, true)
 	case "list":
 		responseText = command.HandleCommand("list", userID, true)
+	case "comments":
+		responseText = command.HandleCommand("推文清單", userID, true)
 	case "ranking":
 		responseText = command.HandleCommand("ranking", userID, true)
 	case "showkeyboard":

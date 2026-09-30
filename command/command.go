@@ -57,6 +57,7 @@ var Commands = map[string]map[string]string{
 	"推文相關": {
 		"新增推文 網址": "新增推文追蹤",
 		"刪除推文 網址": "刪除推文追蹤",
+		"推文清單":    "查看推文追蹤清單",
 		"範例":      "新增推文 https://www.ptt.cc/bbs/EZsoft/M.1708247900.A.27C.html",
 	},
 	"進階應用": {

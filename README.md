@@ -60,6 +60,7 @@ docker compose logs --tail=80 app dynamodb-init
 - `dynamodb-init` 完成建表後顯示 `Exited (0)` 是正常的。
 - 設定有效的 Token 與 HTTPS 網址後，app 紀錄應出現 `Telegram Bot Sets Webhook Success`。
 - 在**自己的機器人**點選「開始」，傳送 `新增 Lifeismoney 咖啡`，再傳送 `清單` 確認。
+- bot 啟動後會自動設定 Telegram 的 Menu 指令清單；選擇 `/add` 或 `/del` 可查看中文「新增／刪除」指令範例，也可直接傳送 `新增 Lifeismoney 咖啡` 這類中文訊息。
 - 網頁中的 Telegram 連結預設屬於本站 Bot；對外提供自架首頁時，請在
   `public/telegram.html` 與 `public/tpls/header.tpl` 替換為自己的機器人帳號，再建置 app。
 - 對外僅需 HTTPS 入口。6060 是診斷埠、8000 是資料庫埠，請移除這兩個
