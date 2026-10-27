@@ -18,6 +18,6 @@
     })();
     </script>
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/assets/site.css?v=20260920-3">
+    <link rel="stylesheet" href="/assets/site.css?v=20261027-1">
 </head>
 {{end}}
