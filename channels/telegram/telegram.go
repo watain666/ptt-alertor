@@ -150,6 +150,7 @@ func handleText(update tgbotapi.Update) {
 }
 
 func handleTextCommand(chatID int64, userID, text string) {
+	text = expandAlias(text)
 	if match, _ := regexp.MatchString("^(刪除|刪除作者)+\\s.*\\*+", text); match {
 		sendConfirmation(chatID, text)
 		return

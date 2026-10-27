@@ -169,6 +169,7 @@ func TestChineseTextRunsSameCommandAsSlash(t *testing.T) {
 		{text: "指令", wantText: "指令說明", wantParseMode: "HTML"},
 		{text: "新增作者", wantText: "<code>/addauthor gossiping ffaarr,obov</code>", wantParseMode: "HTML"},
 		{text: "新增", wantText: "新增追蹤", wantParseMode: "HTML"},
+		{text: "新增推數", wantText: "推文數達標時通知", wantParseMode: "HTML"},
 		{text: "顯示鍵盤", wantText: "顯示小鍵盤", wantMarkup: "keyboard"},
 		{text: "隱藏鍵盤", wantText: "隱藏小鍵盤", wantMarkup: "remove_keyboard"},
 	} {
@@ -220,9 +221,26 @@ func TestEveryChineseCommandHasSlashCommand(t *testing.T) {
 func TestKeyboardButtonsAreCommands(t *testing.T) {
 	for _, row := range keyboardRows {
 		for _, text := range row {
-			if _, ok := slashCommand(text); !ok {
+			if _, ok := slashCommand(expandAlias(text)); !ok {
 				t.Errorf("keyboard button %q is not a command", text)
 			}
+			if n := len([]rune(text)); n > 4 {
+				t.Errorf("keyboard button %q has %d characters, too long for a 4-button row", text, n)
+			}
+		}
+	}
+}
+
+func TestExpandAlias(t *testing.T) {
+	for _, test := range []struct{ text, want string }{
+		{"新增推數", "新增推文數"},
+		{"新增噓數 joke 10", "新增噓文數 joke 10"},
+		{" 新增推數  joke,beauty 10 ", "新增推文數  joke,beauty 10"},
+		{"新增推文數 joke 10", "新增推文數 joke 10"},
+		{"新增 Lifeismoney 咖啡", "新增 Lifeismoney 咖啡"},
+	} {
+		if got := expandAlias(test.text); got != test.want {
+			t.Errorf("expandAlias(%q) = %q, want %q", test.text, got, test.want)
 		}
 	}
 }
