@@ -43,6 +43,15 @@ var botCommands = []botCommand{
 	{slash: "hidekeyboard", chinese: "隱藏鍵盤", description: "隱藏快捷鍵盤"},
 }
 
+// keyboardRows lays out the reply keyboard. Each button sends its Chinese
+// text command; the ones that need arguments reply with their usage.
+var keyboardRows = [][]string{
+	{"清單", "推文清單", "排行", "指令"},
+	{"新增", "新增作者", "新增推文數", "新增噓文數"},
+	{"刪除", "刪除作者", "新增推文", "刪除推文"},
+	{"清理推文", "隱藏鍵盤"},
+}
+
 var menuCommands = func() []menuCommand {
 	commands := make([]menuCommand, 0, len(botCommands))
 	for _, c := range botCommands {

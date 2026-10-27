@@ -162,6 +162,11 @@ func handleTextCommand(chatID int64, userID, text string) {
 		if runMenuCommand(chatID, userID, name) {
 			return
 		}
+		// A command that needs arguments, e.g. tapped on the reply keyboard.
+		if c, ok := findBotCommand(name); ok && c.usage != "" {
+			SendHTMLMessage(chatID, usageView(c))
+			return
+		}
 	}
 	SendTextMessage(chatID, command.HandleCommand(text, userID, true))
 }
@@ -233,14 +238,16 @@ func showReplyKeyboard(chatID int64) {
 		return
 	}
 
-	keyboard := tgbotapi.NewReplyKeyboard(
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("清單"),
-			tgbotapi.NewKeyboardButton("推文清單"),
-			tgbotapi.NewKeyboardButton("排行"),
-			tgbotapi.NewKeyboardButton("指令"),
-		))
+	var rows [][]tgbotapi.KeyboardButton
+	for _, row := range keyboardRows {
+		var buttons []tgbotapi.KeyboardButton
+		for _, text := range row {
+			buttons = append(buttons, tgbotapi.NewKeyboardButton(text))
+		}
+		rows = append(rows, buttons)
+	}
 	msg := tgbotapi.NewMessage(chatID, "顯示小鍵盤")
+	keyboard := tgbotapi.NewReplyKeyboard(rows...)
 	msg.ReplyMarkup = keyboard
 	_, err := bot.Send(msg)
 	if err != nil {

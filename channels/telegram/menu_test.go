@@ -96,7 +96,7 @@ func TestMenuEditCommandsShowChineseExamplesAndKeepFlagHelp(t *testing.T) {
 		{message: "/add", want: "新增 Lifeismoney 咖啡"},
 		{message: "/del", want: "刪除 Lifeismoney 咖啡"},
 		{message: "/add -h", want: "Usage of Ptt Alertor"},
-		{message: "/addauthor", want: "<code>/addauthor 看板 作者</code>"},
+		{message: "/addauthor", want: "<code>新增作者 看板 作者</code>"},
 		{message: "/addpush", want: "數量設為 <code>0</code> 即取消通知"},
 		{message: "/delcomment", want: "<code>刪除推文 https://www.ptt.cc/bbs/EZsoft/M.1708247900.A.27C.html</code>"},
 		{message: "/unknown", want: "無此指令"},
@@ -167,6 +167,8 @@ func TestChineseTextRunsSameCommandAsSlash(t *testing.T) {
 		text, wantText, wantParseMode, wantMarkup string
 	}{
 		{text: "指令", wantText: "指令說明", wantParseMode: "HTML"},
+		{text: "新增作者", wantText: "<code>/addauthor gossiping ffaarr,obov</code>", wantParseMode: "HTML"},
+		{text: "新增", wantText: "新增追蹤", wantParseMode: "HTML"},
 		{text: "顯示鍵盤", wantText: "顯示小鍵盤", wantMarkup: "keyboard"},
 		{text: "隱藏鍵盤", wantText: "隱藏小鍵盤", wantMarkup: "remove_keyboard"},
 	} {
@@ -211,6 +213,16 @@ func TestEveryChineseCommandHasSlashCommand(t *testing.T) {
 	for _, c := range botCommands {
 		if c.usage != "" {
 			assertLineBalancedHTML(t, usageView(c))
+		}
+	}
+}
+
+func TestKeyboardButtonsAreCommands(t *testing.T) {
+	for _, row := range keyboardRows {
+		for _, text := range row {
+			if _, ok := slashCommand(text); !ok {
+				t.Errorf("keyboard button %q is not a command", text)
+			}
 		}
 	}
 }

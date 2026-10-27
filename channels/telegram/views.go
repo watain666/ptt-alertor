@@ -113,12 +113,16 @@ func editMenuHelp(action string) string {
 		"進階參數用法：/del -h"
 }
 
-// usageView explains a slash command sent without its arguments.
+// usageView explains a command sent without its arguments.
 func usageView(c botCommand) string {
-	view := "<b>" + c.description + "</b>（同「" + c.chinese + "」）\n\n" +
-		"用法：<code>/" + c.slash + " " + c.usage + "</code>\n" +
-		"例：<code>/" + c.slash + " " + html.EscapeString(c.example) + "</code>\n" +
-		"或：<code>" + c.chinese + " " + html.EscapeString(c.example) + "</code>"
+	if c.slash == "add" || c.slash == "del" {
+		return editMenuHelp(c.slash)
+	}
+	example := html.EscapeString(c.example)
+	view := "<b>" + c.description + "</b>\n\n" +
+		"用法：<code>" + c.chinese + " " + c.usage + "</code>\n" +
+		"例：<code>" + c.chinese + " " + example + "</code>\n" +
+		"也可以用 /" + c.slash + "：<code>/" + c.slash + " " + example + "</code>"
 	if c.usage == "看板 數量" {
 		view += "\n\n數量設為 <code>0</code> 即取消通知。"
 	}
