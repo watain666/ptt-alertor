@@ -110,53 +110,73 @@ func handleCallbackQuery(update tgbotapi.Update) {
 // showkeyboard - 顯示快捷小鍵盤
 // hidekeyboard - 隱藏快捷小鍵盤
 func handleCommand(update tgbotapi.Update) {
-	var responseText string
 	userID := strconv.Itoa(update.Message.From.ID)
 	chatID := update.Message.Chat.ID
 
-	switch update.Message.Command() {
-	case "add", "del":
-		arguments := strings.TrimSpace(update.Message.CommandArguments())
-		if arguments == "" {
-			responseText = editMenuHelp(update.Message.Command())
-		} else {
-			text := update.Message.Command() + " " + arguments
-			responseText = command.HandleCommand(text, userID, true)
-		}
+	name := update.Message.Command()
+	arguments := strings.TrimSpace(update.Message.CommandArguments())
+	switch name {
 	case "start":
 		command.HandleTelegramFollow(userID, chatID)
-		responseText = "歡迎使用 Ptt Alertor\n輸入「指令」查看相關功能。\n\n觀看Demo:\nhttps://media.giphy.com/media/3ohzdF6vidM6I49lQs/giphy.gif"
-	case "help":
-		responseText = command.HandleCommand("help", userID, true)
-	case "list":
-		responseText = command.HandleCommand("list", userID, true)
-	case "comments":
-		responseText = command.HandleCommand("推文清單", userID, true)
-	case "ranking":
-		responseText = command.HandleCommand("ranking", userID, true)
-	case "showkeyboard":
-		showReplyKeyboard(chatID)
-		return
-	case "hidekeyboard":
-		hideReplyKeyboard(chatID)
-		return
-	default:
-		responseText = "I don't know the command"
+	case "add", "del":
+		if arguments == "" {
+			SendHTMLMessage(chatID, editMenuHelp(name))
+			return
+		}
+		if strings.HasPrefix(arguments, "-") {
+			SendTextMessage(chatID, command.HandleCommand(name+" "+arguments, userID, true))
+			return
+		}
 	}
-	SendTextMessage(chatID, responseText)
+	if runMenuCommand(chatID, userID, name) {
+		return
+	}
+	// The other slash commands work the same as their Chinese text command,
+	// e.g. "/addauthor 看板 作者" is "新增作者 看板 作者".
+	c, ok := findBotCommand(name)
+	if !ok || c.chinese == "" {
+		SendTextMessage(chatID, "無此指令，請傳送「指令」查看指令清單")
+		return
+	}
+	if c.usage != "" && arguments == "" {
+		SendHTMLMessage(chatID, usageView(c))
+		return
+	}
+	handleTextCommand(chatID, userID, strings.TrimSpace(c.chinese+" "+arguments))
 }
 
 func handleText(update tgbotapi.Update) {
-	var responseText string
-	userID := strconv.Itoa(update.Message.From.ID)
-	chatID := update.Message.Chat.ID
-	text := update.Message.Text
+	handleTextCommand(update.Message.Chat.ID, strconv.Itoa(update.Message.From.ID), update.Message.Text)
+}
+
+func handleTextCommand(chatID int64, userID, text string) {
 	if match, _ := regexp.MatchString("^(刪除|刪除作者)+\\s.*\\*+", text); match {
 		sendConfirmation(chatID, text)
 		return
 	}
-	responseText = command.HandleCommand(text, userID, true)
-	SendTextMessage(chatID, responseText)
+	if fields := strings.Fields(text); len(fields) == 1 {
+		name := fields[0]
+		if slash, ok := slashCommand(name); ok {
+			name = slash
+		}
+		if runMenuCommand(chatID, userID, name) {
+			return
+		}
+	}
+	SendTextMessage(chatID, command.HandleCommand(text, userID, true))
+}
+
+// runMenuCommand runs commands that take no arguments, by slash name.
+func runMenuCommand(chatID int64, userID, name string) bool {
+	switch name {
+	case "showkeyboard":
+		showReplyKeyboard(chatID)
+		return true
+	case "hidekeyboard":
+		hideReplyKeyboard(chatID)
+		return true
+	}
+	return sendMenuView(chatID, userID, name)
 }
 
 func sendConfirmation(chatID int64, cmd string) {
