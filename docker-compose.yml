@@ -67,7 +67,7 @@ services:
   # To use Cloudflare Tunnel, you need to create a tunnel in your Cloudflare account and obtain the token. 
   # Set the token in .env before running docker-compose.
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared:2026.10.3
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
     depends_on:
       - app
