@@ -28,6 +28,7 @@ func messageWorker(ckCh chan check) {
 
 type check interface {
 	String() string
+	HTML() string
 	Self() Checker
 	Stop()
 	Run()
@@ -77,5 +78,5 @@ func sendMessenger(c check) {
 
 func sendTelegram(c check) {
 	cr := c.Self()
-	telegram.SendTextMessage(cr.Profile.TelegramChat, c.String())
+	telegram.SendHTMLMessage(cr.Profile.TelegramChat, c.HTML())
 }

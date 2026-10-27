@@ -182,12 +182,25 @@ func SendTextMessage(chatID int64, text string) {
 	}
 }
 
+// SendHTMLMessage sends HTML formatted text message to chatID.
+// HTML tags must not span lines, since long text is split by line break.
+func SendHTMLMessage(chatID int64, text string) {
+	for _, msg := range myutil.SplitTextByLineBreak(text, maxCharacters) {
+		sendMessage(chatID, msg, tgbotapi.ModeHTML)
+	}
+}
+
 func sendTextMessage(chatID int64, text string) {
+	sendMessage(chatID, text, "")
+}
+
+func sendMessage(chatID int64, text string, parseMode string) {
 	if bot == nil {
 		return
 	}
 
 	msg := tgbotapi.NewMessage(chatID, text)
+	msg.ParseMode = parseMode
 	msg.DisableWebPagePreview = true
 	_, err := bot.Send(msg)
 	if err != nil {
