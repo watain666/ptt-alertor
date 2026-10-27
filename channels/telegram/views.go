@@ -60,7 +60,7 @@ func startView() string {
 		"1. 新增追蹤：<code>新增 Lifeismoney 咖啡</code>\n" +
 		"2. 查看清單：<code>清單</code>\n" +
 		"3. 所有指令：<code>指令</code>\n\n" +
-		`📚 <a href="` + siteURL + `/docs">使用文件</a>`
+		"📚 使用文件：" + siteURL + "/docs"
 }
 
 func helpView() string {
@@ -89,7 +89,7 @@ func helpView() string {
 		"<code>新增推文 網址</code> /addcomment 追蹤文章的新推文\n" +
 		"<code>刪除推文 網址</code> /delcomment 取消追蹤\n" +
 		"<code>清理推文</code> /cleancomments 移除已刪除的文章\n\n" +
-		`📚 正規表示式、指令列等進階用法，請看<a href="` + siteURL + `/docs">使用文件</a>`
+		"📚 正規表示式、指令列等進階用法，請看使用文件：\n" + siteURL + "/docs"
 }
 
 func editMenuHelp(action string) string {
@@ -186,7 +186,7 @@ func commentListView(subs subscription.Subscriptions) string {
 		b.WriteString("\n<b>" + html.EscapeString(sub.Board) + "</b>\n")
 		for _, code := range codes {
 			link := "https://www.ptt.cc/bbs/" + sub.Board + "/" + code + ".html"
-			b.WriteString(`• <a href="` + html.EscapeString(link) + `">` + html.EscapeString(code) + "</a>\n")
+			b.WriteString("• " + html.EscapeString(link) + "\n")
 			count++
 		}
 	}
@@ -208,7 +208,7 @@ func rankingView(keywords, authors, pushSums []string) string {
 		}
 		return "推 <code>" + html.EscapeString(word) + "</code>"
 	}))
-	b.WriteString("\n📊 <a href=\"" + siteURL + "/top\">查看完整 TOP 100</a>")
+	b.WriteString("\n📊 完整 TOP 100：" + siteURL + "/top")
 	return b.String()
 }
 

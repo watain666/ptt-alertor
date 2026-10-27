@@ -64,8 +64,10 @@ func htmlField(label, value string) string {
 	return "<b>" + label + "：</b><code>" + html.EscapeString(value) + "</code>\n"
 }
 
+// articleLink puts the bare URL under the title. Telegram asks before opening
+// a link whose text differs from its URL, so the URL is shown as is.
 func articleLink(a article.Article) string {
-	return `<a href="` + html.EscapeString(a.Link) + `">` + html.EscapeString(a.Title) + "</a>"
+	return html.EscapeString(a.Title) + "\n" + html.EscapeString(a.Link)
 }
 
 // boardHashtag turns a board name into a Telegram hashtag, which only allows

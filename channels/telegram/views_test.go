@@ -85,8 +85,8 @@ func TestCommentListView(t *testing.T) {
 	}
 	want := "💬 <b>推文追蹤清單</b>（上限 50 篇）\n" +
 		"\n<b>EZsoft</b>\n" +
-		`• <a href="https://www.ptt.cc/bbs/EZsoft/M.1.A.1.html">M.1.A.1</a>` + "\n" +
-		`• <a href="https://www.ptt.cc/bbs/EZsoft/M.2.A.2.html">M.2.A.2</a>` + "\n" +
+		"• https://www.ptt.cc/bbs/EZsoft/M.1.A.1.html\n" +
+		"• https://www.ptt.cc/bbs/EZsoft/M.2.A.2.html\n" +
 		"\n傳送 <code>清理推文</code> 可移除已刪除的文章。"
 	got := commentListView(subs)
 	if got != want {
@@ -115,7 +115,7 @@ func TestRankingView(t *testing.T) {
 		"\n<b>🔥 推噓文數</b>\n" +
 		"🥇 <b>stock</b> 推 <code>10</code>\n" +
 		"🥈 <b>stock</b> 噓 <code>10</code>\n" +
-		"\n📊 <a href=\"https://ptt-alertor.tiaui.co/top\">查看完整 TOP 100</a>"
+		"\n📊 完整 TOP 100：https://ptt-alertor.tiaui.co/top"
 	if got != want {
 		t.Errorf("rankingView() =\n%s\nwant\n%s", got, want)
 	}

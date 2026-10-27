@@ -20,13 +20,13 @@ func TestCheckerHTML(t *testing.T) {
 			"🔔 <b>新文章通知</b> #Lifeismoney\n\n" +
 				"<b>看板：</b><code>Lifeismoney</code>\n" +
 				"<b>關鍵字：</b><code>咖啡</code>\n\n" +
-				`• <a href="https://www.ptt.cc/bbs/Lifeismoney/M.1.A.1.html">[情報] 咖啡 &lt;買一送一&gt; &amp; 更多</a>` + "\n" +
-				`• <a href="https://www.ptt.cc/bbs/Lifeismoney/M.2.A.2.html">[情報] 第二篇</a>` + "\n"},
+				"• [情報] 咖啡 &lt;買一送一&gt; &amp; 更多\nhttps://www.ptt.cc/bbs/Lifeismoney/M.1.A.1.html" + "\n" +
+				"• [情報] 第二篇\nhttps://www.ptt.cc/bbs/Lifeismoney/M.2.A.2.html" + "\n"},
 		{"author", Checker{board: "drama-ticket", author: "abc", word: "abc", articles: articles[1:]},
 			"✍️ <b>作者新文章</b> #drama_ticket\n\n" +
 				"<b>看板：</b><code>drama-ticket</code>\n" +
 				"<b>作者：</b><code>abc</code>\n\n" +
-				`• <a href="https://www.ptt.cc/bbs/Lifeismoney/M.2.A.2.html">[情報] 第二篇</a>` + "\n"},
+				"• [情報] 第二篇\nhttps://www.ptt.cc/bbs/Lifeismoney/M.2.A.2.html" + "\n"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.c.HTML(); got != tt.want {
@@ -44,8 +44,8 @@ func TestPushSumCheckerHTML(t *testing.T) {
 	want := "🔥 <b>推文數通知</b> #Lifeismoney\n\n" +
 		"<b>看板：</b><code>Lifeismoney</code>\n" +
 		"<b>推文數門檻：</b><code>10</code>\n\n" +
-		`• <code>10</code> <a href="https://www.ptt.cc/bbs/Lifeismoney/M.1.A.1.html">Re: [情報] 蝦皮優惠</a>` + "\n" +
-		`• <code>爆</code> <a href="https://www.ptt.cc/bbs/Lifeismoney/M.2.A.2.html">[情報] 爆文</a>` + "\n"
+		"• <code>10</code> Re: [情報] 蝦皮優惠\nhttps://www.ptt.cc/bbs/Lifeismoney/M.1.A.1.html" + "\n" +
+		"• <code>爆</code> [情報] 爆文\nhttps://www.ptt.cc/bbs/Lifeismoney/M.2.A.2.html" + "\n"
 	if got := psc.HTML(); got != want {
 		t.Errorf("HTML() =\n%s\nwant\n%s", got, want)
 	}
@@ -55,7 +55,7 @@ func TestPushSumCheckerHTML(t *testing.T) {
 	want = "💢 <b>噓文數通知</b> #Lifeismoney\n\n" +
 		"<b>看板：</b><code>Lifeismoney</code>\n" +
 		"<b>噓文數門檻：</b><code>20</code>\n\n" +
-		`• <code>XX</code> <a href="https://www.ptt.cc/bbs/Gossiping/M.3.A.3.html">[問卦] 噓爆</a>` + "\n"
+		"• <code>XX</code> [問卦] 噓爆\nhttps://www.ptt.cc/bbs/Gossiping/M.3.A.3.html" + "\n"
 	if got := psc.HTML(); got != want {
 		t.Errorf("HTML() =\n%s\nwant\n%s", got, want)
 	}
@@ -72,7 +72,7 @@ func TestCommentCheckerHTML(t *testing.T) {
 		},
 	}}
 	want := "💬 <b>推文更新</b> #Gossiping\n\n" +
-		`<a href="https://www.ptt.cc/bbs/Gossiping/M.1.A.1.html">[問卦] 有沒有 &lt;b&gt; 的八卦</a>` + "\n\n" +
+		"[問卦] 有沒有 &lt;b&gt; 的八卦\nhttps://www.ptt.cc/bbs/Gossiping/M.1.A.1.html" + "\n\n" +
 		"<b>推</b> <code>ChoDino</code>: 推文 &lt;3\n" +
 		"<b>→</b> <code>abc</code>: 補充\n"
 	if got := cc.HTML(); got != want {
