@@ -131,6 +131,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, summary:focus-visibl
 .button-secondary:hover { background: var(--surface); border-color: var(--strong-line); }
 .text-link { font-size: 12px; border-bottom: 1px solid var(--strong-line); padding-bottom: 5px; display: inline-flex; align-items: center; gap: 22px; }
 .text-link:hover { border-color: var(--ink); }
+.inline-link { color: var(--ink); border-bottom: 1px solid var(--strong-line); }
+.inline-link:hover { border-color: var(--ink); }
 /* Sections use lines and type, without decorative card chrome. */
 .section-space { padding-top: 72px; padding-bottom: 80px; }
 .features, .faq-section { border-top: 1px solid var(--line); }
