@@ -1,8 +1,8 @@
 module github.com/watain666/ptt-alertor
 
-go 1.26
+go 1.26.0
 
-toolchain go1.26.2
+toolchain go1.27.3
 
 require (
 	github.com/Ptt-Alertor/logrus v0.0.0-20170625191354-a4db038e018c
@@ -14,7 +14,7 @@ require (
 	github.com/julienschmidt/httprouter v0.0.0-20170104185816-8a45e95fc75c
 	github.com/mmcdole/gofeed v0.0.0-20170307182009-042c0a912158
 	github.com/robfig/cron v0.0.0-20160927164231-9585fd555638
-	golang.org/x/net v0.20.0
+	golang.org/x/net v0.61.0
 	gopkg.in/h2non/gock.v1 v1.0.7
 	gopkg.in/mailgun/mailgun-go.v1 v1.0.2
 )
@@ -29,6 +29,6 @@ require (
 	github.com/russross/blackfriday v1.6.0
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect
-	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 )
